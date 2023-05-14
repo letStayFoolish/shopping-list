@@ -3,6 +3,7 @@ const itemForm = document.getElementById('item-form');
 const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
 const clearButton = document.getElementById('clear');
+const itemFilter = document.getElementById('filter');
 
 function createButton(classes) {
   const button = document.createElement('button');
@@ -33,17 +34,23 @@ function addItem(event) {
   const li = document.createElement('li');
   li.appendChild(document.createTextNode(newItem));
 
-  const button = createButton('remove-tem btn-link text-red');
+  const button = createButton('remove-item btn-link text-red');
   li.appendChild(button);
-
+  // Add items to DOM:
   itemList.appendChild(li);
 
+  checkUI();
   itemInput.value = '';
 }
 // Event Deligation
 function removeItem(event) {
+  console.log(event.target.parentElement);
   if (event.target.parentElement.classList.contains('remove-item')) {
-    event.target.parentElement.parentElement.remove();
+    if (window.confirm('Are you sure?')) {
+      event.target.parentElement.parentElement.remove();
+
+      checkUI();
+    }
   }
 }
 
@@ -51,9 +58,24 @@ function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
+
+  checkUI();
+}
+
+function checkUI() {
+  const items = itemList.querySelectorAll('li');
+  if (items.length === 0) {
+    clearButton.style.display = 'none';
+    itemFilter.style.display = 'none';
+  } else {
+    clearButton.style.display = 'block';
+    itemFilter.style.display = 'block';
+  }
 }
 
 // Event Listeners
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 clearButton.addEventListener('click', clearItems);
+
+checkUI();
