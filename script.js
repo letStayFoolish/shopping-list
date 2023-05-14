@@ -2,6 +2,7 @@
 const itemForm = document.getElementById('item-form');
 const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
+const clearButton = document.getElementById('clear');
 
 function createButton(classes) {
   const button = document.createElement('button');
@@ -11,7 +12,7 @@ function createButton(classes) {
   return button;
 }
 
-function createIcon(classes) {fa-solid fa-xmark
+function createIcon(classes) {
   const icon = document.createElement('i');
   icon.className = classes;
   return icon;
@@ -39,5 +40,20 @@ function addItem(event) {
 
   itemInput.value = '';
 }
+// Event Deligation
+function removeItem(event) {
+  if (event.target.parentElement.classList.contains('remove-item')) {
+    event.target.parentElement.parentElement.remove();
+  }
+}
+
+function clearItems() {
+  while (itemList.firstChild) {
+    itemList.removeChild(itemList.firstChild);
+  }
+}
+
 // Event Listeners
 itemForm.addEventListener('submit', addItem);
+itemList.addEventListener('click', removeItem);
+clearButton.addEventListener('click', clearItems);
