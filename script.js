@@ -43,6 +43,11 @@ function onAddItemSubmit(event) {
     itemToEdit.classList.remove('edit-mode');
     itemToEdit.remove();
     isEditMode = false;
+  } else {
+    if (checkIfItemAlreadyExists(newItem)) {
+      alert('Item already exists!');
+      return;
+    }
   }
 
   // Create item DOM element:
@@ -92,6 +97,11 @@ function onClickItem(event) {
   } else {
     setItemToEdit(event.target);
   }
+}
+
+function checkIfItemAlreadyExists(item) {
+  const itemsFromLocalStorage = getItemFromLocalStorage();
+  return itemsFromLocalStorage.includes(item);
 }
 
 function setItemToEdit(item) {
@@ -164,7 +174,7 @@ function checkUI() {
 
   formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
   formBtn.style.backgroundColor = '#333';
-  isEditMode = flase;
+  isEditMode = false;
 }
 // Initialize app:
 function init() {
