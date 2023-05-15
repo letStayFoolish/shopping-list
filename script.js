@@ -31,11 +31,20 @@ function onAddItemSubmit(event) {
   const newItem = itemInput.value;
 
   // Validation
-
   if (newItem === '') {
     alert('Please add the item.');
     return;
   }
+
+  // Check for edit mode:
+  if (isEditMode) {
+    const itemToEdit = itemList.querySelector('.edit-mode');
+    removeItemFromLocalStorage(itemToEdit.textContent);
+    itemToEdit.classList.remove('edit-mode');
+    itemToEdit.remove();
+    isEditMode = false;
+  }
+
   // Create item DOM element:
   addItemToDOM(newItem);
   // Add item to local storage:
@@ -142,6 +151,8 @@ function filterItems(event) {
 }
 
 function checkUI() {
+  itemInput.value = '';
+
   const items = itemList.querySelectorAll('li');
   if (items.length === 0) {
     clearButton.style.display = 'none';
@@ -150,6 +161,10 @@ function checkUI() {
     clearButton.style.display = 'block';
     itemFilter.style.display = 'block';
   }
+
+  formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
+  formBtn.style.backgroundColor = '#333';
+  isEditMode = flase;
 }
 // Initialize app:
 function init() {
